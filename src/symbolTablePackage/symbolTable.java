@@ -10,9 +10,9 @@ public class symbolTable {
     private HashMap<String, symbolTableRow> table;
     private Integer scopeWidth;
 
-    public symbolTable(ArrayList<symbolTableRow> row, Integer scopeWidth) {
+    public symbolTable(ArrayList<symbolTableRow> row) {
         this.row = row;
-        this.scopeWidth = scopeWidth;
+        this.scopeWidth = 0;
 
         table = new HashMap<>();
     }
@@ -27,6 +27,9 @@ public class symbolTable {
     }
 
     public Integer getScopeWidth() {
+        for(symbolTableRow row : table.values()) {
+            this.scopeWidth += row.getWidth();
+        }
         return scopeWidth;
     }
 
@@ -57,4 +60,6 @@ public class symbolTable {
             return true;
         }
     }
+
+
 }
