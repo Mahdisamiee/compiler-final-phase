@@ -1,46 +1,48 @@
+package scopes;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 enum scopeType {DECLARE, FUNCTION, USER_DEFINE_TYPE};
 
-public class symbolTable {
+public class scopeClass {
 
-    private HashMap<String, symbolTableRow> contents; //for keeping contents's informations
-    private symbolTable fatherNode;
-    private ArrayList<symbolTable> childrens;
+    private HashMap<String, symbolTableRow> symbolTable; //for keeping contents's informations
+    private scopeClass fatherNode;
+    private ArrayList<scopeClass> childrens;
     private int scopeWidth;
     private String scopeID;
     private scopeType scopeType;
 
-    public symbolTable(symbolTable fatherNode, String scopeID, scopeType scopeType) {
-        contents  = new HashMap<String, symbolTableRow>();
+    public scopeClass(scopeClass fatherNode, String scopeID, scopeType scopeType) {
+        symbolTable = new HashMap<String, symbolTableRow>();
 
         this.fatherNode = fatherNode;
         this.scopeID = scopeID;
         this.scopeType = scopeType;
     }
 
-    public HashMap<String, symbolTableRow> getContents() {
-        return contents;
+    public HashMap<String, symbolTableRow> getSymbolTable() {
+        return symbolTable;
     }
 
-    public void setContents(HashMap<String, symbolTableRow> contents) {
-        this.contents = contents;
+    public void setSymbolTable(HashMap<String, symbolTableRow> symbolTable) {
+        this.symbolTable = symbolTable;
     }
 
-    public symbolTable getFatherNode() {
+    public scopeClass getFatherNode() {
         return fatherNode;
     }
 
-    public void setFatherNode(symbolTable fatherNode) {
+    public void setFatherNode(scopeClass fatherNode) {
         this.fatherNode = fatherNode;
     }
 
-    public ArrayList<symbolTable> getChildrens() {
+    public ArrayList<scopeClass> getChildrens() {
         return childrens;
     }
 
-    public void setChildrens(ArrayList<symbolTable> childrens) {
+    public void setChildrens(ArrayList<scopeClass> childrens) {
         this.childrens = childrens;
     }
 

@@ -159,7 +159,7 @@ params
 cond_stmt
 switch_body
 loop_stmt
-types
+type
 const_val
 unary_op
 op1
