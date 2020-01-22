@@ -1,8 +1,18 @@
 package lulu2_package;// Generated from D:/Intelli j/lulu2_final/src\lulu2_grammer.g4 by ANTLR 4.8
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import scopes.scopeClass;
+import scopes.scopeTree;
+import enums.scopeType;
+import scopes.symbolTableRow;
+//import enums.scopeType;
 
 /**
  * This class provides an empty implementation of {@link lulu2_grammerListener},
@@ -10,13 +20,24 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class lulu2_grammerBaseListener implements lulu2_grammerListener {
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterProgram(lulu2_grammerParser.ProgramContext ctx) {
 
+	private lulu2_grammerParser parser;
+
+	String id;
+
+	scopeTree scopeTree;
+	scopeClass global;
+	scopeClass currentScope;
+	HashMap<String, symbolTableRow> symbolTable;
+	int scopeNumber = 1;
+
+	@Override public void enterProgram(lulu2_grammerParser.ProgramContext ctx) { // we dont need to it. cause we never start with this and first scope that we use is declare
+		int childNumber = ctx.getChildCount();
+		System.out.println("%%%%%%%%%%%%" + childNumber + "%%%%%%%%%%%%%%");
+		System.out.println(id);
+		global = new scopeClass(null,"#"+ scopeNumber, scopeType.GLOBAL); //make global scope
+		currentScope = global;		//set current scope global cause we are in global;
+		scopeNumber++;
 	}
 	/**
 	 * {@inheritDoc}
@@ -29,19 +50,45 @@ public class lulu2_grammerBaseListener implements lulu2_grammerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFt_dcl(lulu2_grammerParser.Ft_dclContext ctx) { }
+	@Override public void enterFt_dcl(lulu2_grammerParser.Ft_dclContext ctx) {
+
+		currentScope = new scopeClass(this.currentScope,"#" + scopeNumber,scopeType.DECLARE);
+		scopeNumber++;
+
+//		currentScope.setChildrens();
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFt_dcl(lulu2_grammerParser.Ft_dclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunc_dcl(lulu2_grammerParser.Func_dclContext ctx) { }
+	@Override public void exitFt_dcl(lulu2_grammerParser.Ft_dclContext ctx) {
+//		TokenStream ts = parser.getTokenStream();
+
+
+		ArrayList<scopeClass> chlidrens;
+	}
+	public void args(lulu2_grammerParser.ArgsContext ttx ) {
+		System.out.println(ttx.type().getText()+"$$$");
+		if(ttx.getChildCount() > 1) {
+			args(ttx.args());
+		}
+	}
+	@Override public void enterFunc_dcl(lulu2_grammerParser.Func_dclContext ctx) {
+//		String functionName = ctx.ID().toString();
+//		int cnt = 1;
+//		functionName += "#" + cnt;
+//		lulu2_grammerParser.ArgsContext returnArgsVar = ctx.args(0);
+//		ArrayList<lulu2_grammerParser.ArgsContext> returnArgs = new ArrayList<>();
+//		while(returnArgsVar != null){
+//			returnArgs.add(returnArgsVar);
+//			returnArgsVar = returnArgsVar.args();
+//		}
+		args(ctx.args(0));
+//		ctx.args(0);
+//		System.out.println(ctx.args(0));
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -77,7 +124,10 @@ public class lulu2_grammerBaseListener implements lulu2_grammerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterType_dcl(lulu2_grammerParser.Type_dclContext ctx) { }
+	@Override public void enterType_dcl(lulu2_grammerParser.Type_dclContext ctx) {
+//		String id = ctx.ID().getText();
+//		System.out.println(id);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -89,7 +139,11 @@ public class lulu2_grammerBaseListener implements lulu2_grammerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVar_def(lulu2_grammerParser.Var_defContext ctx) { }
+	@Override public void enterVar_def(lulu2_grammerParser.Var_defContext ctx) {
+		String type = ctx.type().getText();
+		String d = ctx.var_val().get(0).getText();
+		System.out.println("((((((((((((((((" + d);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -101,13 +155,21 @@ public class lulu2_grammerBaseListener implements lulu2_grammerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVar_val(lulu2_grammerParser.Var_valContext ctx) { }
+	@Override public void enterVar_val(lulu2_grammerParser.Var_valContext ctx) {
+		lulu2_grammerParser.ExprContext m = ctx.expr();
+		if(m != null){
+			System.out.println(ctx.expr().getChild(0).getText());
+		}
+//		System.out.println("!!!!!!!!!!!!!" + m);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVar_val(lulu2_grammerParser.Var_valContext ctx) { }
+	@Override public void exitVar_val(lulu2_grammerParser.Var_valContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -161,13 +223,17 @@ public class lulu2_grammerBaseListener implements lulu2_grammerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFun_def(lulu2_grammerParser.Fun_defContext ctx) { }
+	@Override public void enterFun_def(lulu2_grammerParser.Fun_defContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFun_def(lulu2_grammerParser.Fun_defContext ctx) { }
+	@Override public void exitFun_def(lulu2_grammerParser.Fun_defContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -197,7 +263,20 @@ public class lulu2_grammerBaseListener implements lulu2_grammerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssign(lulu2_grammerParser.AssignContext ctx) { }
+	@Override public void enterAssign(lulu2_grammerParser.AssignContext ctx) {
+		String id;
+		if(ctx.expr().func_call() != null ){
+			id = ctx.var(0).getText();
+			System.out.println("&&&&&&&"+ id);
+			if(id != null){
+//				symbolTableRow str = scopeTree.find(this.currentScope, id); //this section have error =\
+//				if(str != null){
+//					//we should return error that "this function should be declared first"
+//					System.out.println("***** ---->"+ id +"this is not declared");
+//				}
+			}
+		}
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -293,7 +372,17 @@ public class lulu2_grammerBaseListener implements lulu2_grammerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCond_stmt(lulu2_grammerParser.Cond_stmtContext ctx) { }
+	@Override public void enterCond_stmt(lulu2_grammerParser.Cond_stmtContext ctx) {
+//		String child = ctx.getChild(0).getText();
+//		if (child == "if") {
+//			Object scopeType;
+//			scopeClass if1 = new scopeClass(currentScope,"if1",scopeType.FUNCTION);
+//			currentScope = if1;
+//			if1.getSymbolTable()
+//
+//		}
+//		System.out.println("****************"+child+"**************");
+	}
 	/**
 	 * {@inheritDoc}
 	 *

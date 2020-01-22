@@ -1,10 +1,12 @@
 package scopes;
 
+import enums.AccessLabel;
+import enums.Types;
+
 import java.util.ArrayList;
 import java.util.Map;
 
-enum Types { CLASS, FUNCTION, INT, STRING, FLOAT, BOOL, ARRAY};
-enum AccessLabel {NULL, PUBLIC, PRIVATE, PROTECTED};
+
 
 public class symbolTableRow {
 

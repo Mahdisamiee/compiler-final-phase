@@ -1,9 +1,11 @@
 package scopes;
 
+import enums.scopeType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-enum scopeType {DECLARE, FUNCTION, USER_DEFINE_TYPE};
+; // it should be more i think. for each statement that has scope
 
 public class scopeClass {
 
@@ -66,7 +68,12 @@ public class scopeClass {
         return scopeType;
     }
 
-    public void setScopeType(scopeType scopeType) {
+    public void setScopeType(enums.scopeType scopeType) {
         this.scopeType = scopeType;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    public void addChild(scopeClass child) {
+        this.childrens.add(child);
     }
 }

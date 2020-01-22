@@ -1,5 +1,6 @@
 import lulu2_package.*;
 
+import java.lang.NullPointerException;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenFactory;
@@ -14,7 +15,7 @@ public class Main extends lulu2_grammerBaseVisitor{
         String st = "declare {\n" +
                 "int a;\n" +
                 "myType;\n" +
-                "(int, float) = f1(float b);\n" +
+                "(int, float, string,bool[]) = f1(float b);\n" +
                 "}\n" +
                 "type myType {\n" +
                 "protected int x;\n" +
@@ -40,5 +41,9 @@ public class Main extends lulu2_grammerBaseVisitor{
         lulu2_grammerParser parser = new lulu2_grammerParser(tokens);
         parser.setBuildParseTree(true);
         ParseTree tree = parser.program();
+
+        lulu2_grammerListener listener = new lulu2_grammerBaseListener();
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(listener, tree);
     }
 }
